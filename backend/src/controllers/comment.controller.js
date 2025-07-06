@@ -20,10 +20,12 @@ export const createComment = asyncHandler(async (req, res) => {
   const { postId } = req.params;
   const { content } = req.body;
 
-  if (!content || content.trim() === '') {
-    return res.status(400).json({ error: 'Comment content is required' });
+  if (!content || content.trim() === '' || content.trim().length > 1000) {
+    return res.status(400).json({
+      error:
+        'Comment content is required and must be less than 1000 characters',
+    });
   }
-
   const user = await User.findOne({ clerkId: userId });
   const post = await Post.findById(postId);
 
